@@ -20,7 +20,7 @@ export class SubmissionAST implements ISubmissionAST {
     compare(otherSubmissionAST: ISubmissionAST): IAnalysisResult {
         throw new Error('Method not implemented.');
     }
-    accept(visitor: any): void {
+    accept(visitor: AbstractParseTreeVisitor): void {
         throw new Error('Method not implemented.');
     }
 }
