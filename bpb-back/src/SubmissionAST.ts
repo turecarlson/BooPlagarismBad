@@ -11,7 +11,11 @@ export class SubmissionAST implements ISubmissionAST {
     private ast : ParseTree;
 
     constructor(fileContent : string) {
-        this.ast = parse(fileContent);
+        try {
+            this.ast = parse(fileContent);
+        } catch {
+            throw new Error('Parser encountered an error.')
+        }
     }
     compare(otherSubmissionAST: ISubmissionAST): IAnalysisResult {
         throw new Error('Method not implemented.');
