@@ -89,6 +89,10 @@ export class SubmissionManager implements ISubmissionManager {
             } else {
                 SubmissionDAO.readSubmissions(assignmentId).then((submissions) => {
                     this.submissionCacheByAssignment.set(assignmentId, submissions);
+                    submissions.forEach(submission => {
+                        //Populate the other cache as well
+                        this.submissionCache.set(submission.getId(), submission);
+                    });
                     resolve(submissions);
                 }).catch((err) => {
                     reject(err);
