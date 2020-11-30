@@ -26,9 +26,11 @@ export interface ISubmissionManager {
 export class SubmissionManager implements ISubmissionManager {
 
     private submissionCache : Map<string,ISubmission>;
+    private submissionCacheByAssignment : Map<string, ISubmission[]>;
     
     constructor() {
         this.submissionCache = new Map<string,ISubmission>();
+        this.submissionCacheByAssignment = new Map<string, ISubmission[]>();
     }
 
     /**
@@ -81,13 +83,17 @@ export class SubmissionManager implements ISubmissionManager {
      * @returns A Promise containing all Submissions of the specified assignment, if any exist. Will return an empty list otherwise.
      */
     getSubmissions = async(assignmentId : string): Promise<ISubmission[]> => {
-        //TODO: Update to use cache
         return new Promise((resolve, reject) => {
-            SubmissionDAO.readSubmissions(assignmentId).then((submissions) => {
-                resolve(submissions);
-            }).catch((err) => {
-                reject(err);
-            });
+            if(this.submissionCacheByAssignment.get(assignmentId) != undefined) {
+                resolve(this.submissionCacheByAssignment.get(assignmentId));
+            } else {
+                SubmissionDAO.readSubmissions(assignmentId).then((submissions) => {
+                    this.submissionCacheByAssignment.set(assignmentId, submissions);
+                    resolve(submissions);
+                }).catch((err) => {
+                    reject(err);
+                });
+            }
         });
     }
     
