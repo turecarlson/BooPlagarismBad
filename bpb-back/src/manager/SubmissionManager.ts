@@ -5,6 +5,7 @@ import fs from 'fs';
 import util from 'util';
 import SubmissionData from "../types/SubmissionData"
 import { AppConfig } from '../AppConfig';
+import e from 'express';
 const readFileContent = util.promisify(fs.readFile); //Promisify readfile  to allow use of Promise chaining
 
 /**
@@ -197,19 +198,29 @@ export class SubmissionManager implements ISubmissionManager {
      */
     compareSubmissions = async(submissionIdA : string, submissionIdB : string) : Promise<IAnalysisResult[]> => {
 
-        return new Promise((resolve,reject) => {
-            this.getSubmission(submissionIdA)
-            .then(submissionA => {
-                this.getSubmission(submissionIdB)
-                    .then(submissionB => {
-                        resolve(submissionA.compare(submissionB)); 
-                    }
-                ).catch((err) => {
-                    reject(err);
-                });
-            }).catch((err) => {
-                reject(err);
-            });
+        return new Promise(async(resolve,reject) => {
+            let submissionA : ISubmission;
+            let submissionB : ISubmission;
+            //Check the cache first for each submission. If not in cache, fetch from database, and put in cache.
+            //SubmissionA
+            if(this.submissionCache.get(submissionIdA) != undefined) {
+                submissionA = this.submissionCache.get(submissionIdA);
+            } else {
+                await this.getSubmission(submissionIdA).then(submission => {
+                   submissionA = submission;
+                   this.submissionCache.set(submissionIdA, submissionA);
+                }).catch((err) => {reject(err)});
+            }
+            //SubmissionB
+            if(this.submissionCache.get(submissionIdB) != undefined) {
+                submissionB = this.submissionCache.get(submissionIdB);
+            } else {
+                await this.getSubmission(submissionIdB).then(submission => {
+                    submissionB = submission;
+                    this.submissionCache.set(submissionIdB, submissionB);
+                }).catch((err) => {reject(err)});
+            }
+            resolve(submissionA.compare(submissionB));
         });
     }
 
