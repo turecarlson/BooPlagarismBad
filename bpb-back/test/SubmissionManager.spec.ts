@@ -519,6 +519,36 @@ describe("SubmissionManager.ts",() => {
                 expect(err).to.have.property("message").which.equals("getSubmission failed");
             });
         });
+
+        it("Should pull submissions from cache on second comparison attempt", () => {
+            var testSubmission2 = new Submission.builder().build(); 
+
+            testSubmission.addAnalysisResultEntry(new AnalysisResultEntry("are1",testSubmission.getId(),"test","test",1,2,1,2,"1234567123456712345671234567123456712345671234567123456712345671234567","e"));
+            testSubmission2.addAnalysisResultEntry(new AnalysisResultEntry("are2",'otherID',testSubmission2.getId(),"test2",1,1,2,2,"890abcd890abcd890abcd890abcd890abcd890abcd890abcd890abcd890abcd890abcd","e"));
+            
+            var mockGetSubmission = chai.spy.on(testSubmissionManager,'getSubmission',(submissionId) =>{
+                return new Promise((resolve,reject) => {
+                    if(submissionId === testSubmission.getId()) {
+                        resolve(testSubmission);
+                    } else {
+                        resolve(testSubmission2);
+                    }
+                });
+            });
+
+            //Pulls from database, should call getSubmission twice to pull submissions from database
+            return testSubmissionManager.compareSubmissions(testSubmission2.getId(),testSubmission.getId()).then((analysisResult) => {
+                expect(mockGetSubmission).to.have.been.called.with(testSubmission.getId());
+                expect(mockGetSubmission).to.have.been.called.with(testSubmission2.getId());
+                expect(mockGetSubmission).to.have.been.called.twice;
+
+                //Pulls from cache, should not have called getSubmission again
+                return testSubmissionManager.compareSubmissions(testSubmission2.getId(),testSubmission.getId()).then((analysisResult) => {
+                    expect(mockGetSubmission).to.have.been.called.twice;
+                });
+            });
+
+        })
     });
 
     describe("getSubmissionFileContent()",() => {
