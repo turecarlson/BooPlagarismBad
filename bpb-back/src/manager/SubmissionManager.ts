@@ -5,6 +5,7 @@ import fs from 'fs';
 import util from 'util';
 import SubmissionData from "../types/SubmissionData"
 import { AppConfig } from '../AppConfig';
+import e from 'express';
 const readFileContent = util.promisify(fs.readFile); //Promisify readfile  to allow use of Promise chaining
 
 /**
