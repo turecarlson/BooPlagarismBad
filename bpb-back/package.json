@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nyc --reporter=json-summary --reporter=text mocha --require ts-node/register test/*.spec.ts",
     "integration-test": "ts-mocha test/IntegrationTests.ts",
-    "start": "tsc && node dist/src/_main.js"
+    "start": "env-cmd -f ./../../ -e production node dist/src/_main.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
     "@types/express-fileupload": "^1.1.5",
     "@types/mongoose": "^5.7.37",
     "antlr4ts": "^0.5.0-alpha.3",
+    "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "java-ast": "^0.3.0",

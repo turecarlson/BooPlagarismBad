@@ -7,6 +7,7 @@ export class AppConfig {
      * Returns the configured application port
      */
     public static port() : string {
+        console.log('Fetching APIPORT:', process.env.APIPORT)
         return process.env.APIPORT;
     }
 
