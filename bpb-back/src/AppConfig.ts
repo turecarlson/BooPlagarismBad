@@ -7,7 +7,7 @@ export class AppConfig {
      * Returns the configured application port
      */
     public static port() : string {
-        console.log('Fetching APIPORT:', process.env.APIPORT)
+        console.log('Fetching APIPORT:', process.env.APIPORT) //Prints the APIPORT from '/bpb-back/./env-cmdrc.json'
         return process.env.APIPORT;
     }
 
