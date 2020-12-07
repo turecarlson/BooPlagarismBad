@@ -10,7 +10,7 @@ const vagrantURL = 'http://192.168.33.10:8080/'
 export function postAssignment(name : string) : void {
     fetch(`${vagrantURL}Assignments`, {
         method: 'POST',
-        body: JSON.stringify({'name': name, 'submissionIds': []}),
+        body: JSON.stringify({'name': name}),
         headers: {'content-type': 'application/json'}
     });
 }
