@@ -22,49 +22,7 @@ When using the Vagrant deployment, the following *.sh scripts can be executed fr
 # Getting Started (Manually)
 * [Install MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
 * Create an empty MongoDB database called 'bpb' (without quotes)
-* Export the following environment variables: 
-`APIPORT`
-`DBCONNECTIONSTRING`
-`MAXFILEUPLOADSIZE`
-`COMPARISONTHRESHOLD`
-`REACT_APP_BPB_SRVADDR` (*Note*: See below for recommended default values for each variable)
-* Navigate to `bpb-back/`, run `npm run start`
-* Navigate to `bpb-front/`, run `npm run start`
-
-# Required Environment Variables
-
-Note: all environment variables must be specified as strings
-
-*REACT_APP_BPB_SRVADDR*
-
-Specifies the location of the back-end server. Must point to where the back-end is hosted.
-
-Example Value: http://127.0.0.1:8080/
-
-*APIPORT*
-
-Specifies the port that bpb-back will serve API requests on.
-
-Must match the port value specified in REACT_APP_BPB_SRVADDR (above)
-
-Example Value: 8080
-
-*DBCONNECTIONSTRING*
-
-Specifies the location of the bpb MongoDB database. Must point to where the database is hosted.
-
-Example Value: "mongodb://127.0.0.1:27017/bpb"
-
-*MAXFILEUPLOADSIZE*
-
-Indicates the maximum allowable size for a single submission file upload (in bytes)
-
-Example Value: 5000000
-
-*COMPARISONTHRESHOLD*
-
-Determines similarity sensitivity for individual subtree element comparisons.
-
-Determines whether BPB considers submission subelements to be similar (or not)
-
-Example Value: 120 (default)
+* Modify environment variables if necessary in `bpb-back/.env-cmdrc.json` and `bpb-front/.env-cmdrc.json`
+  *  Note: If APIPORT is changed in `bpb-back/.env-cmdrc.json`, the port must be updated in REACT_APP_BPB_SRVADDR in  `bpb-front/.env-cmdrc.json`, or the front-end will not connect to the back-end
+* Navigate to `bpb-back/`, run `npm run start_manual`
+* Navigate to `bpb-front/`, run `npm run start_manual`
