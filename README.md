@@ -24,5 +24,9 @@ When using the Vagrant deployment, the following *.sh scripts can be executed fr
 * Create an empty MongoDB database called 'bpb' (without quotes)
 * Modify environment variables if necessary in `bpb-back/.env-cmdrc.json` and `bpb-front/.env-cmdrc.json`
   *  Note: If APIPORT is changed in `bpb-back/.env-cmdrc.json`, the port must be updated in REACT_APP_BPB_SRVADDR in  `bpb-front/.env-cmdrc.json`, or the front-end will not connect to the back-end
-* Navigate to `bpb-back/`, run `npm run start_manual`
-* Navigate to `bpb-front/`, run `npm run start_manual`
+* Navigate to `bpb-back/`
+  * run `npm install`
+  * run `npm run start_manual`
+* Navigate to `bpb-front/`
+  * run `npm install`
+  * run `npm run start_manual`
